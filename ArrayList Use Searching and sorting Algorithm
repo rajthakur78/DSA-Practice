@@ -1,0 +1,403 @@
+import java.util.*;
+
+public class Main {
+    public int arr[];
+    public int size;
+
+    Main() {
+        arr = new int[2];
+        size = 0;
+    }
+
+    public void add(int value) {
+        if (size == arr.length) resize();
+        arr[size++] = value;
+    }
+
+    public void binarySearch(int value) {
+        if (size == 0) return;
+
+        int left = 0;
+        int right = size - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (arr[mid] == value) {
+                System.out.println("Value found at index: " + mid);
+                return;
+            } else if (arr[mid] < value) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        System.out.println("Value not found");
+    }
+
+    public void selectionSort() {
+        for (int i = 0; i < size - 1; i++) {
+            int min = i;
+            for (int j = i + 1; j < size; j++) {
+                if (arr[j] < arr[min]) {
+                    min = j;
+                }
+            }
+            int temp = arr[i];
+            arr[i] = arr[min];
+            arr[min] = temp;
+        }
+    }
+
+    public void bubbleSort() {
+        for (int i = 0; i < size - 1; i++) {
+            for (int j = 0; j < size - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public void insertionSort() {
+        for (int i = 1; i < size; i++) {
+            int key = arr[i];
+            int j = i - 1;
+            while (j >= 0 && arr[j] > key) {
+                arr[j + 1] = arr[j];
+                j--;
+            }
+            arr[j + 1] = key;
+        }
+    }
+
+    public void mergeSort() {
+        mergeSort(0, size - 1);
+    }
+
+    public void mergeSort(int left, int right) {
+        if (left >= right) return;
+        int mid = (left + right) / 2;
+        mergeSort(left, mid);
+        mergeSort(mid + 1, right);
+        merge(left, mid, right);
+    }
+
+    private void merge(int left, int mid, int right) {
+        int n1 = mid - left + 1;
+        int n2 = right - mid;
+
+        int[] leftArr = new int[n1];
+        int[] rightArr = new int[n2];
+
+        for (int i = 0; i < n1; i++)
+            leftArr[i] = arr[left + i];
+        for (int j = 0; j < n2; j++)
+            rightArr[j] = arr[mid + 1 + j];
+
+        int i = 0, j = 0, k = left;
+        while (i < n1 && j < n2) {
+            if (] <= rightArr[j]) {
+                arr[k] = leftArr[i];
+                i++;
+            } else {
+                arr[k] = rightArr[j];
+                j++;
+            }
+            k++;
+        }
+        while (i < n1) {
+            arr[k] = leftArr[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            arr[k] = rightArr[j];
+            j++;
+            k++;
+        }
+    }
+
+    public void linearSearch(int value) {
+        if (size == 0) return;
+        for (int i = 0; i < size; i++) {
+            if (value == arr[i]) {
+                System.out.println("The value is: " + arr[i]);
+                return;
+            }
+        }
+        System.out.println("Value not found");
+    }
+
+    public void delete() {
+        if (size == 0) return;
+        size--;
+    }
+
+    public void deleteIndex(int index) {
+        if (index < 0 || index >= size) return;
+        for (int i = index; i < size - 1; i++) {
+            arr[i] = arr[i + 1];
+        }
+        size--;
+    }
+
+    public void displayIndex(int index) {
+        if (index < 0 || index >= size) {
+            System.out.println("Index out of bounds");
+            return;
+        }
+        System.out.println("Value at index " + index + ": " + arr[index]);
+    }
+
+    public void resize() {
+        int newArr[] = new int[arr.length * 2];
+        for (int i = 0; i < size; i++) {
+            newArr[i] = arr[i];
+        }
+        arr = newArr;
+    }
+
+    public void display() {
+        for (int i = 0; i < size; i++) {
+            System.out.print(arr[i] + " ");
+        }
+        System.out.println();
+    }
+
+    public void heapSort() {
+        for (int i = size / 2 - 1; i >= 0; i--) {
+            heapify(size, i);
+        }
+        for (int i = size - 1; i > 0; i--) {
+            int temp = arr[0];
+            arr[0] = arr[i];
+            arr[i] = temp;
+            heapify(i, 0);
+        }
+    }
+
+    private void heapify(int n, int i) {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < n && arr[left] > arr[largest]) {
+            largest = left;
+        }
+        if (right < n && arr[right] > arr[largest]) {
+            largest = right;
+        }
+        if (largest != i) {
+            int swap = arr[i];
+            arr[i] = arr[largest];
+            arr[largest] = swap;
+            heapify(n, largest);
+        }
+    }
+    
+    public int[] prefixSum(){
+        int[] prefix = new int[size];
+        prefix[0] = arr[0];
+        for(int i = 1; i < size; i++){
+            prefix[i] = prefix[i - 1] + arr[i];
+        }
+        return prefix;
+    }
+
+    public int maxSum(int k){
+        int sum = 0;
+        for(int i = 0; i < k; i++){
+            sum += arr[i];
+        }
+        int max = sum;
+        for(int i = k; i < size; i++){
+            sum += arr[i] - arr[i - k];
+            max = Math.max(max, sum);
+        }
+        return max;
+    }
+
+    public void pairSum(int target){
+        int left = 0;
+        int right = size - 1;
+        while(left < right){
+            int sum = arr[left] + arr[right];
+            if(sum == target){
+                System.out.println("Pair found: " + arr[left] + " + " + arr[right] + " = " + target);
+                return;
+            } else if(sum < target){
+                left++;
+            } else {
+                right--;
+            }
+        }
+        System.out.println("No pair found with sum " + target);
+    }
+
+    public int kadane(){
+        int max = arr[0];
+        int sum = 0;
+        for(int i = 0; i < size; i++){
+            sum += arr[i];
+            if(sum > max) max = sum;
+            if(sum < 0) sum = 0;
+        }
+        return max;
+    }
+
+    public void removeDuplicates(){
+        for(int i = 0; i < size; i++){
+            for(int j = i + 1; j < size; j++){
+                if(arr[i] == arr[j]){
+                    deleteIndex(j);
+                    j--;
+                }
+            }
+        }
+    }
+
+    public void rotateRight(){
+        int last = arr[size - 1];
+        for(int i = size - 1; i > 0; i--){
+            arr[i] = arr[i - 1];
+        }
+        arr[0] = last;
+    }
+
+    public void frequency(){
+        boolean[] visited = new boolean[size];
+        for(int i = 0; i < size; i++){
+            if(!visited[i]){
+                int count = 1;
+                for(int j = i + 1; j < size; j++){
+                    if(arr[i] == arr[j]){
+                        count++;
+                        visited[j] = true;
+                    }
+                }
+                System.out.println(arr[i] + " -> " + count);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Main list = new Main();
+        list.add(10);
+        list.add(20);
+        list.add(30);
+        list.add(40);
+        list.add(50);
+
+        list.linearSearch(40);
+
+     
+      //  list.deleteIndex(2);
+       // list.binarySearch(50);
+
+      
+        list.display();
+
+        list.add(15);
+        list.add(5);
+        list.add(45);
+        list.add(20);
+        list.add(30);
+        
+        System.out.println("\n=== Pair Sum (target = 20) ===");
+        list.pairSum(20);
+        
+        System.out.println("\n=== Kadane's Algorithm (Maximum Subarray Sum) ===");
+        int maxSubarray = list.kadane();
+        System.out.println("Maximum subarray sum: " + maxSubarray);
+        
+        System.out.println("\n=== Prefix Sum ===");
+        int[] prefix = list.prefixSum();
+        System.out.print("Prefix sums: ");
+        for(int i = 0; i < prefix.length; i++){
+            System.out.print(prefix[i] + " ");
+        }
+        System.out.println();
+        
+        System.out.println("\n=== Maximum Sum of Subarray of size 3 ===");
+        int maxSumK = list.maxSum(3);
+        System.out.println("Maximum sum of subarray of size 3: " + maxSumK);
+        
+        System.out.println("\n=== Frequency of elements ===");
+        list.frequency();
+        
+        System.out.println("\n=== Before removing duplicates ===");
+        list.display();
+        
+        System.out.println("\n=== After removing duplicates ===");
+        list.removeDuplicates();
+        list.display();
+        
+        System.out.println("\n=== Rotating array right ===");
+        list.rotateRight();
+        System.out.print("After right rotation: ");
+        list.display();
+        
+        System.out.println("\n=== Selection Sort ===");
+        Main list3 = new Main();
+        list3.add(64);
+        list3.add(34);
+        list3.add(25);
+        list3.add(12);
+        list3.add(22);
+        list3.add(11);
+        list3.add(90);
+        System.out.print("Before selection sort: ");
+        list3.display();
+        list3.selectionSort();
+        System.out.print("After selection sort: ");
+        list3.display();
+        
+        System.out.println("\n=== Bubble Sort ===");
+        Main list4 = new Main();
+        list4.add(64);
+        list4.add(34);
+        list4.add(25);
+        list4.add(12);
+        list4.add(22);
+        list4.add(11);
+        list4.add(90);
+
+        list4.bubbleSort();
+
+        list4.display();
+        
+        Main list5 = new Main();
+        list5.add(64);
+        list5.add(34);
+        list5.add(25);
+        list5.add(12);
+        list5.add(22);
+        list5.add(11);
+        list5.add(90);
+
+     //   list5.insertionSort();
+        //list5.display();
+        
+ 
+        list.displayIndex(2);
+        
+    
+     //   list.heapSort();
+        
+      //  list.display();
+
+        Main list2 = new Main();
+        list2.add(9);
+        list2.add(3);
+        list2.add(7);
+        list2.add(1);
+        list2.add(5);
+        list2.add(2);
+        list2.add(8);
+       
+       // list2.mergeSort();
+      //  list2.display();
+    }
+}
