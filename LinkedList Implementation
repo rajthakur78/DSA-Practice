@@ -1,0 +1,457 @@
+public class CustomLinkedList {
+
+    class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    Node head;
+    Node tail;
+    int size;
+
+    public void addFirst(int data) {
+        Node node = new Node(data);
+        if (head == null) {
+            head = tail = node;
+        } else {
+            node.next = head;
+            head = node;
+        }
+        size++;
+    }
+
+    public void addLast(int data) {
+        Node Newnode = new Node(data);
+        if (head == null) {
+            head = tail = Newnode;
+        } else {
+            tail.next = Newnode;
+            tail = Newnode;
+        }
+        size++;
+    }
+
+    public void add(int index, int data) {
+        if (index < 0 || index > size)
+            return;
+
+     
+        Node temp = head;
+
+        for (int i = 0; i < index - 1; i++)
+            temp = temp.next;
+
+        Node node = new Node(data);
+        node.next = temp.next;
+        temp.next = node;
+        size++;
+        
+    }
+
+    public int getFirst() {
+        if (head == null)
+            return -1;
+        return head.data;
+    }
+
+    public int getLast() {
+        if (tail == null)
+            return -1;
+        return tail.data;
+    }
+
+    public int get(int index) {
+        if (index < 0 || index >= size)
+            return -1;
+
+        Node temp = head;
+
+        for (int i = 0; i < index; i++)
+            temp = temp.next;
+
+        return temp.data;
+    }
+
+    public void set(int index, int value) {
+        if (index < 0 || index >= size)
+            return;
+
+        Node temp = head;
+
+        for (int i = 0; i < index; i++)
+            temp = temp.next;
+
+        temp.data = value;
+    }
+
+    public void removeFirst() {
+        if (head == null)
+            return;
+
+        head = head.next;
+        size--;
+
+        if (head == null)
+            tail = null;
+    }
+
+    public void removeLast() {
+        if (head == null)
+            return;
+
+        if (head.next == null) {
+            head = tail = null;
+            size = 0;
+            return;
+        }
+
+        Node temp = head;
+
+        while (temp.next != tail)
+            temp = temp.next;
+
+        temp.next = null;
+        tail = temp;
+        size--;
+    }
+
+    public void remove(int index) {
+        if (index < 0 || index >= size)
+            return;
+
+        if (index == 0) {
+            removeFirst();
+            return;
+        }
+
+        if (index == size - 1) {
+            removeLast();
+            return;
+        }
+
+        Node temp = head;
+
+        for (int i = 0; i < index - 1; i++)
+            temp = temp.next;
+
+        temp.next = temp.next.next;
+        size--;
+    }
+
+    public boolean removeByValue(int value) {
+        if (head == null)
+            return false;
+
+        if (head.data == value) {
+            removeFirst();
+            return true;
+        }
+
+        Node temp = head;
+
+        while (temp.next != null) {
+            if (temp.next.data == value) {
+                if (temp.next == tail)
+                    tail = temp;
+
+                temp.next = temp.next.next;
+                size--;
+                return true;
+            }
+            temp = temp.next;
+        }
+
+        return false;
+    }
+
+    public boolean contains(int value) {
+        return indexOf(value) != -1;
+    }
+
+    public int indexOf(int value) {
+        Node temp = head;
+        int index = 0;
+
+        while (temp != null) {
+            if (temp.data == value)
+                return index;
+
+            temp = temp.next;
+            index++;
+        }
+
+        return -1;
+    }
+
+    public int lastIndexOf(int value) {
+        Node temp = head;
+        int index = 0;
+        int ans = -1;
+
+        while (temp != null) {
+            if (temp.data == value)
+                ans = index;
+
+            temp = temp.next;
+            index++;
+        }
+
+        return ans;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    public void clear() {
+        head = tail = null;
+        size = 0;
+    }
+
+    public void display() {
+        Node temp = head;
+
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+
+        System.out.println();
+    }
+
+    public void reverse() {
+        Node prev = null;
+        Node current = head;
+        tail = head;
+
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        head = prev;
+    }
+
+    // public Node reverseRecursive(Node node) {
+    //     if (node == null || node.next == null)
+    //         return node;
+
+    //     Node newHead = reverseRecursive(node.next);
+
+    //     node.next.next = node;
+    //     node.next = null;
+
+    //     return newHead;
+    // }
+
+    // public void reverseRecursive() {
+    //     tail = head;
+    //     head = reverseRecursive(head);
+    // }
+
+    public int middle() {
+        if (head == null)
+            return -1;
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return slow.data;
+    }
+
+    public int nthFromEnd(int n) {
+        if (n <= 0 || n > size)
+            return -1;
+
+        Node first = head;
+        Node second = head;
+
+        for (int i = 0; i < n; i++)
+            first = first.next;
+
+        while (first != null) {
+            first = first.next;
+            second = second.next;
+        }
+
+        return second.data;
+    }
+
+    public boolean search(int value) {
+        Node temp = head;
+
+        while (temp != null) {
+            if (temp.data == value)
+                return true;
+
+            temp = temp.next;
+        }
+
+        return false;
+    }
+
+    public int countOccurrences(int value) {
+        int count = 0;
+        Node temp = head;
+
+        while (temp != null) {
+            if (temp.data == value)
+                count++;
+
+            temp = temp.next;
+        }
+
+        return count;
+    }
+
+    public boolean detectLoop() {
+        Node slow = head;
+        Node fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void createLoop() {
+        if (head != null)
+            tail.next = head;
+    }
+
+    public void removeDuplicates() {
+        Node current = head;
+
+        while (current != null) {
+            Node temp = current;
+
+            while (temp.next != null) {
+                if (temp.next.data == current.data) {
+                    if (temp.next == tail)
+                        tail = temp;
+
+                    temp.next = temp.next.next;
+                    size--;
+                } else {
+                    temp = temp.next;
+                }
+            }
+
+            current = current.next;
+        }
+    }
+
+    public void sort() {
+        if (head == null)
+            return;
+
+        for (Node i = head; i != null; i = i.next) {
+            for (Node j = i.next; j != null; j = j.next) {
+                if (i.data > j.data) {
+                    int t = i.data;
+                    i.data = j.data;
+                    j.data = t;
+                }
+            }
+        }
+    }
+
+    public CustomLinkedList merge(CustomLinkedList other) {
+        CustomLinkedList list = new CustomLinkedList();
+
+        Node t1 = this.head;
+        Node t2 = other.head;
+
+        while (t1 != null) {
+            list.addLast(t1.data);
+            t1 = t1.next;
+        }
+
+        while (t2 != null) {
+            list.addLast(t2.data);
+            t2 = t2.next;
+        }
+
+        return list;
+    }
+
+    public CustomLinkedList cloneList() {
+        CustomLinkedList copy = new CustomLinkedList();
+
+        Node temp = head;
+
+        while (temp != null) {
+            copy.addLast(temp.data);
+            temp = temp.next;
+        }
+
+        return copy;
+    }
+
+    public static void main(String[] args) {
+
+        CustomLinkedList list = new CustomLinkedList();
+
+        list.addLast(10);
+        list.addLast(20);
+        list.addLast(30);
+        list.addFirst(5);
+        list.add(2, 15);
+        list.addFirst(4);
+
+        list.display();
+
+        //  System.out.println("First : " + list.getFirst());
+        // System.out.println("Last : " + list.getLast());
+        // System.out.println("Index 2 : " + list.get(2));
+
+        // list.set(2, 100);
+        // list.display();
+
+        // list.removeFirst();
+        // list.removeLast();
+        // list.removeByValue(10);
+
+        // list.display();
+
+        // list.addLast(50);
+        // list.addLast(40);
+        // list.addLast(10);
+
+        // System.out.println("Contains 40 : " + list.contains(40));
+        // System.out.println("Middle : " + list.middle());
+         System.out.println("2nd From End : " + list.nthFromEnd(2));
+
+        // list.sort();
+        // list.display();
+
+        // list.reverse();
+        // list.display();
+  
+        // list.removeDuplicates();
+        // list.display();
+
+        CustomLinkedList copy = list.cloneList();
+        copy.display();
+    }
+}
