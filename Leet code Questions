@@ -1,0 +1,43 @@
+import java.util.HashSet;
+
+public class LongestSubstring {
+
+    public static void main(String[] args) {
+
+        String s = "abcabcbb";
+
+        HashSet<Character> set = new HashSet<>();
+
+        int left = 0;
+        int maxLength = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+
+            System.out.println("------------------------------------");
+            System.out.println("Current Character : " + s.charAt(right));
+
+            while (set.contains(s.charAt(right))) {
+
+                System.out.println("Duplicate Found : " + s.charAt(right));
+                System.out.println("Removing : " + s.charAt(left));
+
+                set.remove(s.charAt(left));
+                left++;
+
+                System.out.println("Left moved to : " + left);
+            }
+
+            set.add(s.charAt(right));
+
+            System.out.println("Current Window : " + set);
+
+            maxLength = Math.max(maxLength, right - left + 1);
+
+            System.out.println("Current Length : " + (right - left + 1));
+            System.out.println("Maximum Length : " + maxLength);
+        }
+
+        System.out.println("------------------------------------");
+        System.out.println("Final Answer = " + maxLength);
+    }
+}
