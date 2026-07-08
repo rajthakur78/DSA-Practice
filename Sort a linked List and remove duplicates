@@ -1,0 +1,236 @@
+// ---------->>>>Sort a linked List and remove duplicates  <<<<-------------
+
+
+class DoublyLl{
+    private Node head;
+    private Node tail;
+     private int size;
+      public DoublyLl(){
+            this.head =null;
+            this.tail=null;
+            this.size =0;
+      }
+    private class Node{
+        Node next;
+        Node prev;
+        int value;
+        public Node(int value){
+            this.value=value;
+        }
+        // public Node(int value,Node next){
+        //          this.value =value;
+        //          this.next=next;
+        //    }
+    }
+    public void insertfirst(int value){
+        Node newNode =new Node(value);
+         newNode.next=head;
+         if(head!=null){
+            head.prev=newNode;
+         }
+         head=newNode;
+        if(tail==null){
+            tail=head;
+        }
+        
+        size++;
+
+    }
+    public void insertLast(int value){
+        if(size==0){
+            insertfirst(value);
+            return;
+        }
+        Node newNode =new Node(value);
+        
+        tail.next =newNode;
+        newNode.prev=tail; 
+        tail=newNode;
+        tail.next=null;
+        size++;
+
+    }
+    public void insert(int index,int value){
+        if(index==0){
+            insertfirst(value);
+            return;
+        }
+        if(index==size-1){
+            insertLast(value);
+            return;
+        }
+        Node newNode =new Node(value);
+         Node temp=head;
+       for(int i=0;i<index-1;i++){
+        temp =temp.next;
+       }
+       newNode.next=temp.next;
+       newNode.prev =temp;
+       temp.next.prev=newNode;
+       temp.next=newNode;
+       size++;
+    }
+    
+    
+    public void sorted() {
+        if (head == null) return;
+
+        Node current = head;
+
+        while (current != null) {
+            Node index = current.next;
+
+            while (index != null) {
+                if (current.value > index.value) {
+                    
+                    int temp = current.value;
+                    current.value = index.value;
+                    index.value = temp;
+                }
+                index = index.next;
+            }
+
+            current = current.next;
+        }
+    }
+
+    
+  void removeDuplicate(){
+    if (head == null) return;
+
+    Node current = head;
+
+    while (current != null && current.next != null) {
+        if (current.value == current.next.value) {
+            current.next = current.next.next;
+            if (current.next != null) {
+                current.next.prev = current;
+            }
+            size--;
+        } else {
+            current = current.next;
+        }
+    }
+}
+
+        
+    
+    
+    // public void delete(int index){
+    //   if(size == 0){
+    //     System.out.println("cannot delete bcoz list is empty");
+    //     return;
+    //     }
+    //     if(index==0){
+    //         deletefirst();
+    //         return;
+    //     }
+    //     if(index==size-1){
+    //       deleteLast();
+    //         return;
+    //     }
+        
+    //      Node temp=head;
+    //   for(int i=0;i<index-1;i++){
+    //     temp =temp.next;
+    //   }
+    //   System.out.println(temp.next.value+" deleted");
+    //   temp.next.next.prev=temp;
+    //   temp.next=temp.next.next;
+    //   size--;
+
+
+    // }
+    // public void findsum(int sum)
+    // {
+    // if(head==null)
+    // {
+    // return;
+    // }
+    // Node temp = head;
+    // Node add;
+    // int index=0;
+    // int index2 = 0;
+    
+    //  while(temp != null ){
+    //         add = temp.next;
+    //         index2 = index + 1;
+     
+    // while(add!=null ){
+       
+        
+    //   if((temp.value + add.value)==sum){
+    //       System.out.print("sum find 2 index :" + index + " And "+ index2);
+    //       return ;
+    //   }
+    //   add =add.next;
+    //   index2++;
+    //   }
+    //   temp = temp.next;
+    //   index++;
+    // }
+    // System.out.println("Sum Not Found");
+    // }
+ 
+    // public void deletefirst(){
+    //     if(size == 0){
+    //     System.out.println("cannot delete bcoz list is empty");
+    //     return;
+    //     }
+    //   System.out.println("vlaue deleted from front"+head.value);
+
+    //     head=head.next;
+    //     head.prev=null;
+        
+    //     size--;
+    // }
+    // public void deleteLast(){
+    //     if(size == 0){
+    //     System.out.println("cannot delete bcoz list is empty");
+    //     return;
+    //     }
+    //     Node temp=head;
+    //   for(int i=0;i<size-2;i++){
+    //     temp =temp.next;
+    //   }
+    //   System.out.println("tail deleted "+temp.next.value);
+    //       tail.prev=null;
+    //       tail=temp;
+    //       tail.next=null;
+    //   size--;
+    // }
+
+    public void display(){
+     Node temp=head;
+     System.out.println();
+     System.out.print("head ->");
+     for(int i =0;i<size;i++){
+        System.out.print(temp.value+" -> ");
+        temp=temp.next;
+     }
+     System.out.println(" Tail");
+    }
+}
+public class Main{
+    public static void main(String[] Args){
+     DoublyLl ll =new DoublyLl();
+     ll.insertfirst(1);
+     ll.insertfirst(2);
+     ll.insertfirst(6);
+     ll.insertfirst(4);
+     ll.insertfirst(4);
+     ll.insertfirst(6);
+     ll.insertLast(0);
+     ll.insert(2,20);
+     ll.display();
+    //  ll.deletefirst();
+    //  ll.deleteLast();
+    //  ll.deleteLast();
+    //  ll.delete(1);
+  //  ll.findsum(2);
+  ll.sorted();
+     ll.display();
+     ll.removeDuplicate();
+     ll.display();
+    }
+}
