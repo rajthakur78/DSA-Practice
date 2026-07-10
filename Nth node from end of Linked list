@@ -1,0 +1,108 @@
+// --------->>>> Nth node from end of Linked list <<<<---------
+
+
+class ll {
+
+    private Node head;
+    private Node tail;
+    private int size;
+
+    ll() {
+        this.head = null;
+        this.tail = null;
+        this.size = 0;
+    }
+
+    void InsertFirst(int value) {
+        Node newNode = new Node(value);
+        newNode.next = head;
+        head = newNode;
+
+        if (tail == null) {
+            tail = head;
+        }
+        size++;
+    }
+
+    void InsertLast(int vlaue) {
+        if (head == null) {
+            InsertFirst(vlaue);
+            return;
+        }
+
+        Node newNode = new Node(vlaue);
+        tail.next = newNode;
+        tail = newNode;
+        size++;
+    }
+
+    void InsertIndex(int index, int value) {
+        if (index == 0) {
+            InsertFirst(value);
+            return;
+        }
+
+        if (index == size) {
+            InsertLast(value);
+            return;
+        }
+
+        Node temp = head;
+        for (int i = 1; i < index; i++) {
+            temp = temp.next;
+        }
+
+        Node newNode = new Node(value);
+        newNode.next = temp.next;
+        temp.next = newNode;
+        size++;
+
+    }
+
+    void NthNode(int index) {
+        index = size - 1 - index;
+        Node temp = head;
+        for (int i = 0; i <= index; i++) {
+            temp = temp.next;
+        }
+        System.out.println("Value of Nth node form last is :- " + temp.value);
+
+    }
+
+    void display() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.value + " -> ");
+            temp = temp.next;
+        }
+        System.out.println("END");
+    }
+
+    class Node {
+
+        private int value;
+        private Node next;
+
+        Node(int value) {
+            this.value = value;
+        }
+
+        Node(int value, Node next) {
+            this.value = value;
+            this.next = next;
+        }
+    }
+}
+
+public class NthfromEND {
+
+    public static void main(String[] args) {
+        ll LL = new ll();
+        LL.InsertFirst(15);
+        LL.InsertIndex(1, 14);
+        LL.InsertLast(12);
+        LL.display();
+        LL.NthNode(2);
+
+    }
+}
