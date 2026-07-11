@@ -1,0 +1,114 @@
+//  ------------>>>>  Delete Middle of LinkedList <<<<-------------
+
+
+class ll {
+
+    private Node head;
+    private Node tail;
+    private int size;
+
+    public ll() {
+        this.head = null;
+        this.tail = null;
+        this.size = 0;
+    }
+
+    void InsertFirst(int value) {
+        Node newNode = new Node(value);
+        newNode.next = head;
+        head = newNode;
+        if (tail == null) {
+            tail = head;
+        }
+        size++;
+    }
+
+    void InsertLast(int value) {
+        if (head == null) {
+            InsertFirst(value);
+            return;
+        }
+
+        Node newNode = new Node(value);
+        tail.next = newNode;
+        tail = newNode;
+        size++;
+    }
+
+    void InsertIndex(int index, int value) {
+        if (index == 0) {
+            InsertFirst(value);
+            return;
+        }
+
+        if (index == size) {
+            InsertLast(value);
+            return;
+        }
+
+        Node temp = head;
+        for (int i = 1; i < index; i++) {
+            temp = temp.next;
+        }
+
+        Node newNode = new Node(value);
+        newNode.next = temp.next;
+        temp.next = newNode;
+        size++;
+    }
+
+    void DLTmid() {
+        Node temp = head;
+        int idx = (size - 1) / 2;
+
+        for (int i = 0; i < idx; i++) {
+            temp = temp.next;
+        }
+
+        temp.next = temp.next.next;
+        size--;
+    }
+
+    void display() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.value + " -> ");
+            temp = temp.next;
+        }
+        System.out.println("END");
+    }
+
+    class Node {
+
+        private int value;
+        private Node next;
+
+        Node(int value) {
+            this.value = value;
+        }
+
+        public Node(int value, Node next) {
+            this.value = value;
+            this.next = next;
+        }
+
+    }
+}
+
+public class DLTmidValue {
+
+    public static void main(String[] args) {
+        ll LL = new ll();
+        LL.InsertFirst(12);
+        LL.InsertFirst(12);
+        LL.InsertLast(15);
+        LL.InsertLast(7);
+        LL.InsertIndex(3, 25);
+        LL.InsertIndex(3, 24);
+        LL.display();
+
+        System.out.println("After delete mid :- ");
+        LL.DLTmid();
+        LL.display();
+    }
+}
