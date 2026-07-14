@@ -1,0 +1,97 @@
+import java.util.*;
+
+class LinkedList {
+    Node head;
+    Node tail;
+
+    static class Node {
+        int value;
+        Node next;
+
+        Node(int value) {
+            this.value = value;
+        }
+    }
+
+    void insertLast(int value) {
+        Node newNode = new Node(value);
+        if (head == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+    }
+
+    void display() {
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.value + " -> ");
+            temp = temp.next;
+        }
+        System.out.println("END");
+    }
+
+    static Node findCommonValueNode(LinkedList list1, LinkedList list2) {
+        Set<Integer> values = new HashSet<>();
+        Node temp1 = list1.head;
+
+        while (temp1 != null) {
+            values.add(temp1.value);
+            temp1 = temp1.next;
+        }
+
+        Node temp2 = list2.head;
+        while (temp2 != null) {
+            if (values.contains(temp2.value)) {
+                return new Node(temp2.value); // return new node with common value
+            }
+            temp2 = temp2.next;
+        }
+
+        return null;
+    }
+
+    static void intersectAtValue(LinkedList list1, LinkedList list2, Node commonNode) {
+        if (commonNode == null) return;
+
+        // Attach common node to both lists
+        list1.tail.next = commonNode;
+        list1.tail = commonNode;
+
+        list2.tail.next = commonNode;
+        list2.tail = commonNode;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        LinkedList list1 = new LinkedList();
+        list1.insertLast(10);
+        list1.insertLast(20);
+        list1.insertLast(30);
+
+        LinkedList list2 = new LinkedList();
+        list2.insertLast(15);
+        list2.insertLast(200); // common value
+        list2.insertLast(25);
+
+        System.out.print("List 1 before intersection: ");
+        list1.display();
+        System.out.print("List 2 before intersection: ");
+        list2.display();
+
+        LinkedList.Node commonNode = LinkedList.findCommonValueNode(list1, list2);
+        if (commonNode != null) {
+            System.out.println("Common value found: " + commonNode.value);
+            LinkedList.intersectAtValue(list1, list2, commonNode);
+        } else {
+            System.out.println("No common value found.");
+        }
+
+        System.out.print("List 1 after intersection: ");
+        list1.display();
+        System.out.print("List 2 after intersection: ");
+        list2.display();
+    }
+}
