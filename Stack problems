@@ -1,0 +1,303 @@
+public class StackPrograms {
+
+    // ====================== CUSTOM STACK ======================
+
+    static class Stack {
+        int arr[];
+        int top;
+        int size;
+
+        Stack(int size) {
+            this.size = size;
+            arr = new int[size];
+            top = -1;
+        }
+
+        public void push(int value) {
+            if (top == size - 1) {
+                System.out.println("Stack Overflow");
+                return;
+            }
+            arr[++top] = value;
+        }
+
+        public int pop() {
+            if (top == -1) {
+                System.out.println("Stack Underflow");
+                return -1;
+            }
+            return arr[top--];
+        }
+
+        public int peek() {
+            if (top == -1)
+                return -1;
+            return arr[top];
+        }
+
+        public boolean isEmpty() {
+            return top == -1;
+        }
+    }
+
+    // ===========================================================
+    // 6. Evaluate Postfix Expression
+    // ===========================================================
+
+    public static int evaluatePostfix(String exp) {
+
+        Stack stack = new Stack(exp.length());
+
+        for (int i = 0; i < exp.length(); i++) {
+
+            char ch = exp.charAt(i);
+
+            if (ch == ' ')
+                continue;
+
+            if (Character.isDigit(ch)) {
+                stack.push(ch - '0');
+            } else {
+
+                int b = stack.pop();
+                int a = stack.pop();
+
+                switch (ch) {
+                    case '+':
+                        stack.push(a + b);
+                        break;
+
+                    case '-':
+                        stack.push(a - b);
+                        break;
+
+                    case '*':
+                        stack.push(a * b);
+                        break;
+
+                    case '/':
+                        stack.push(a / b);
+                        break;
+                }
+            }
+        }
+
+        return stack.pop();
+    }
+
+    // ===========================================================
+    // 7. Evaluate Prefix Expression
+    // ===========================================================
+
+    public static int evaluatePrefix(String exp) {
+
+        Stack stack = new Stack(exp.length());
+
+        for (int i = exp.length() - 1; i >= 0; i--) {
+
+            char ch = exp.charAt(i);
+
+            if (ch == ' ')
+                continue;
+
+            if (Character.isDigit(ch)) {
+
+                stack.push(ch - '0');
+
+            } else {
+
+                int a = stack.pop();
+                int b = stack.pop();
+
+                switch (ch) {
+                    case '+':
+                        stack.push(a + b);
+                        break;
+
+                    case '-':
+                        stack.push(a - b);
+                        break;
+
+                    case '*':
+                        stack.push(a * b);
+                        break;
+
+                    case '/':
+                        stack.push(a / b);
+                        break;
+                }
+            }
+        }
+
+        return stack.pop();
+    }
+
+    // ===========================================================
+    // 8. Reverse String Using Stack
+    // ===========================================================
+
+    public static String reverseString(String str) {
+
+        char stack[] = new char[str.length()];
+        int top = -1;
+
+        for (int i = 0; i < str.length(); i++) {
+            stack[++top] = str.charAt(i);
+        }
+
+        String ans = "";
+
+        while (top != -1) {
+            ans += stack[top--];
+        }
+
+        return ans;
+    }
+
+    // ===========================================================
+    // 9. Reverse Words In Sentence
+    // ===========================================================
+
+    public static String reverseWords(String sentence) {
+
+        String words[] = sentence.split(" ");
+
+        String stack[] = new String[words.length];
+
+        int top = -1;
+
+        for (int i = 0; i < words.length; i++) {
+            stack[++top] = words[i];
+        }
+
+        String ans = "";
+
+        while (top != -1) {
+
+            ans += stack[top];
+
+            if (top != 0)
+                ans += " ";
+
+            top--;
+        }
+
+        return ans;
+    }
+
+    // ===========================================================
+    // 10. Two Stacks In One Array
+    // ===========================================================
+
+    static class TwoStacks {
+
+        int arr[];
+        int top1;
+        int top2;
+
+        TwoStacks(int size) {
+
+            arr = new int[size];
+
+            top1 = -1;
+
+            top2 = size;
+        }
+
+        public void push1(int value) {
+
+            if (top1 + 1 == top2) {
+                System.out.println("Overflow");
+                return;
+            }
+
+            arr[++top1] = value;
+        }
+
+        public void push2(int value) {
+
+            if (top1 + 1 == top2) {
+                System.out.println("Overflow");
+                return;
+            }
+
+            arr[--top2] = value;
+        }
+
+        public int pop1() {
+
+            if (top1 == -1)
+                return -1;
+
+            return arr[top1--];
+        }
+
+        public int pop2() {
+
+            if (top2 == arr.length)
+                return -1;
+
+            return arr[top2++];
+        }
+    }
+
+    // ===========================================================
+    // MAIN METHOD
+    // ===========================================================
+
+    public static void main(String[] args) {
+
+        // ---------------- Postfix ----------------
+
+        String postfix = "23*54*+9-";
+
+        System.out.println("Postfix Expression : " + postfix);
+
+        System.out.println("Answer = " + evaluatePostfix(postfix));
+
+        // ---------------- Prefix ----------------
+
+        String prefix = "-+*2345";
+
+        System.out.println("\nPrefix Expression : " + prefix);
+
+        System.out.println("Answer = " + evaluatePrefix(prefix));
+
+        // ---------------- Reverse String ----------------
+
+        String str = "HELLO";
+
+        System.out.println("\nOriginal String : " + str);
+
+        System.out.println("Reversed String : " + reverseString(str));
+
+        // ---------------- Reverse Words ----------------
+
+        String sentence = "I Love Java Programming";
+
+        System.out.println("\nOriginal Sentence : " + sentence);
+
+        System.out.println("Reverse Words : " + reverseWords(sentence));
+
+        // ---------------- Two Stacks ----------------
+
+        TwoStacks ts = new TwoStacks(10);
+
+        ts.push1(10);
+        ts.push1(20);
+        ts.push1(30);
+
+        ts.push2(100);
+        ts.push2(200);
+        ts.push2(300);
+
+        System.out.println("\nStack1 Pop : " + ts.pop1());
+
+        System.out.println("Stack1 Pop : " + ts.pop1());
+
+        System.out.println("Stack2 Pop : " + ts.pop2());
+
+        System.out.println("Stack2 Pop : " + ts.pop2());
+
+    }
+}
