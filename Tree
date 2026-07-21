@@ -1,0 +1,67 @@
+
+public class Main
+{
+    class Node{
+        int data;
+        Node left , right;
+        Node(int data){
+            this.data= data;
+            this.left = null;
+            this.right = null;
+        }
+    }
+    
+    Node root;
+    
+    public int height(Node root){
+         if(root == null) return -1;
+        
+        int heightleft = height(root.left);
+        int heightright = height(root.right);
+        
+        return Math.max(heightright,heightleft) + 1;
+        
+    }
+    public void postorder(Node root){
+        if(root == null) return;
+        
+        postorder(root.left);
+        postorder(root.right);
+        System.out.print(root.data + " ");
+    }
+    
+    public void preorder(Node root){
+        if (root == null) return;
+        
+        System.out.print(root.data + " ");
+        preorder(root.left);
+        preorder(root.right);
+    }
+    
+    public void inorder(Node root){
+        if(root == null) return;
+        
+        inorder(root.left);
+        System.out.print(root.data + " ");
+        inorder(root.right);
+    }
+	public static void main(String[] args) {
+		Main tree = new Main();
+		tree.root = tree.new Node(45);
+		tree.root.left = tree.new Node(23);
+		tree.root.right = tree.new Node(99);
+		tree.root.left.left = tree.new Node(25);
+		tree.root.left.right = tree.new Node(22);
+		tree.root.right.left = tree.new Node(75);
+		tree.root.right.right = tree.new Node(102);
+		tree.root.right.right.right = tree.new Node(111);
+		
+		tree.inorder(tree.root);
+		System.out.println();
+		tree.preorder(tree.root);
+		System.out.println();
+		tree.postorder(tree.root);
+		System.out.println();
+		System.out.println(" height of tree :"+tree.height(tree.root));
+		}
+}
