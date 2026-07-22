@@ -1,0 +1,90 @@
+public class BinaryTreeDemo {
+
+    class Node {
+        int data;
+        Node left;
+        Node right;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    Node root;
+
+    // ------------------ Custom Queue ------------------
+
+    class Queue {
+
+        Node[] arr = new Node[20];
+        int front = 0;
+        int rear = -1;
+
+        public boolean isEmpty() {
+            return front > rear;
+        }
+
+        public void enqueue(Node node) {
+            rear++;
+            arr[rear] = node;
+        }
+
+        public Node dequeue() {
+            Node temp = arr[front];
+            front++;
+            return temp;
+        }
+    }
+
+    // ------------------ Create Tree ------------------
+
+    public void createTree() {
+
+        root = new Node(10);
+
+        root.left = new Node(20);
+        root.right = new Node(30);
+
+        root.left.left = new Node(40);
+        root.left.right = new Node(50);
+
+        root.right.left = new Node(60);
+        root.right.right = new Node(70);
+    }
+
+    // ------------------ BFS ------------------
+
+    public void bfs(Node root) {
+
+        if (root == null)
+            return;
+
+        Queue q = new Queue();
+
+        q.enqueue(root);
+
+        while (!q.isEmpty()) {
+
+            Node current = q.dequeue();
+
+            System.out.print(current.data + " ");
+
+            if (current.left != null)
+                q.enqueue(current.left);
+
+            if (current.right != null)
+                q.enqueue(current.right);
+        }
+    }
+
+    public static void main(String[] args) {
+
+        BinaryTreeDemo tree = new BinaryTreeDemo();
+
+        tree.createTree();
+
+        System.out.println("BFS Traversal");
+
+        tree.bfs(tree.root);
+    }
+}
